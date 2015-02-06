@@ -1,0 +1,34 @@
+body {
+	font-size: 12px;
+	font-family: 'Lato', sans-serif;
+	background-color: black;
+	color: white;
+}
+
+a:link {
+	color: white;
+}
+
+.contents {
+	max-width: 900px;
+	margin: 10px auto;
+}
+
+.header {
+	font-size: 2em;
+}
+
+.server {
+	padding: 0.5em;
+	margin: 5px;
+	border: 1px solid white;	
+}
+.server-name {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+.server-players {
+	display: block;
+	float: right;
+	font-size: 3em;
+}
