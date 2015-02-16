@@ -1,8 +1,12 @@
 package main
 
 import (
+	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
+	"math"
 	"net"
 	"net/http"
 	"sort"
@@ -16,6 +20,12 @@ type Server struct {
 	Map         string
 	Capacity    uint8
 	PlayerCount uint8
+}
+
+type Player struct {
+	Name     string
+	Score    int32
+	Duration float32
 }
 
 type Servers []Server
@@ -66,7 +76,7 @@ func ServeServerList(rw http.ResponseWriter, req *http.Request) {
 		srvReadBytes, err := conn.Read(srvbuf)
 		_ = srvReadBytes
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			i += 6
 			continue
 		}
@@ -89,6 +99,54 @@ func ServeServerList(rw http.ResponseWriter, req *http.Request) {
 	return
 }
 
+func ServePlayerList(rw http.ResponseWriter, req *http.Request) {
+	address := req.FormValue("address")
+	if len(address) < 1 {
+		rw.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	addr, err := net.ResolveUDPAddr("udp", address)
+	if err != nil {
+		rw.WriteHeader(http.StatusNotFound)
+		return
+	}
+	conn, _ := net.DialUDP("udp", nil, addr)
+	defer conn.Close()
+	conn.Write([]byte("\xFF\xFF\xFF\xFF\x55\xFF\xFF\xFF\xFF"))
+
+	buf := make([]byte, 1400)
+	conn.SetReadDeadline(time.Now().Add(1 * time.Second))
+	_, err = conn.Read(buf)
+	if err != nil {
+		rw.WriteHeader(http.StatusNotFound)
+		return
+	}
+	conn.Write(append([]byte("\xFF\xFF\xFF\xFF\x55"), buf[5:9]...))
+	conn.SetReadDeadline(time.Now().Add(1 * time.Second))
+	_, err = conn.Read(buf)
+	if err != nil {
+		rw.WriteHeader(http.StatusNotFound)
+		return
+	}
+	playerCount := buf[5]
+	var i byte = 0
+	ptr := 6
+	players := make([]Player, playerCount)
+	for i < playerCount {
+		ptr += 1
+		players[i].Name = getString(buf, ptr)
+		ptr += len(players[i].Name) + 1
+		players[i].Score = int32(binary.LittleEndian.Uint32(buf[ptr : ptr+4]))
+		ptr += 4
+		players[i].Duration = math.Float32frombits(binary.LittleEndian.Uint32(buf[ptr : ptr+4]))
+		ptr += 4
+		i += 1
+	}
+	resp, _ := json.Marshal(&players)
+	rw.Header().Add("content-type", "application/json; charset=utf-8")
+	rw.Write(resp)
+}
+
 func ServeStaticFiles(rw http.ResponseWriter, req *http.Request) {
 	http.ServeFile(rw, req, "."+req.URL.Path)
 }
@@ -96,6 +154,7 @@ func ServeStaticFiles(rw http.ResponseWriter, req *http.Request) {
 func main() {
 	tpl = template.Must(template.ParseFiles("./templates/index.tpl"))
 	http.HandleFunc("/", ServeServerList)
+	http.HandleFunc("/players", ServePlayerList)
 	http.HandleFunc("/static/", ServeStaticFiles)
 	http.ListenAndServe(":3000", nil)
 }

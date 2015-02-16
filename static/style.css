@@ -9,6 +9,14 @@ a:link {
 	color: white;
 }
 
+a:visited {
+	color: gray;
+}
+
+.clear {
+	clear:both;
+}
+
 .contents {
 	max-width: 900px;
 	margin: 10px auto;
@@ -21,14 +29,37 @@ a:link {
 .server {
 	padding: 0.5em;
 	margin: 5px;
-	border: 1px solid white;	
+	border: 1px solid white
 }
+
 .server-name {
 	font-size: 1.5em;
 	font-weight: bold;
 }
+
+.server-shit {
+	margin-top: 1em;
+}
+
 .server-players {
-	display: block;
 	float: right;
+	text-align: center;
+}
+
+.server-players-count {
 	font-size: 3em;
+}
+
+table {
+	max-width: 80%;
+	margin: auto;
+	border-collapse: collapse;
+}
+
+tr {
+	border-bottom: 1px solid white;
+}
+
+td {
+	padding: 0.5em;
 }
