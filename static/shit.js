@@ -20,8 +20,9 @@ function showServerPlayers(ip, enable) {
 				srvdiv.insertAdjacentHTML("beforeend", playersTpl({players: data}));
 
 				var link = document.getElementById(ip).querySelector(".server-players-button");
-				link.onclick = function() {
+				link.onclick = function(evt) {
 					showServerPlayers(ip, false);
+					evt.preventDefault();
 				}
 			}
 		};
@@ -31,9 +32,20 @@ function showServerPlayers(ip, enable) {
 		var tablediv = document.getElementById(ip).querySelector(".server-players-list");
 		tablediv.parentNode.removeChild(tablediv);
 		var link = document.getElementById(ip).querySelector(".server-players-button");
-		link.onclick = function() {
+		link.onclick = function(evt) {
 			showServerPlayers(ip, true);
+			evt.preventDefault();
 		}
 	}
 
 }
+
+document.addEventListener("DOMContentLoaded", function(evt) {
+	var elems = document.querySelectorAll(".server-players-button");
+	for(var i = 0; i < elems.length; i++) {
+		elems[i].onclick = function(evt) {
+			showServerPlayers(evt.target.dataset.address, true);
+			evt.preventDefault();
+		};
+	}
+});

@@ -12,7 +12,7 @@
 			<div class="server" id="{{.Address}}:{{.Port}}">
 				<div class="server-players">
 					<span class="server-players-count">{{.PlayerCount}}/{{.Capacity}}</span><br>
-					<a class="server-players-button" onclick="showServerPlayers('{{.Address}}:{{.Port}}', true);" href="#">Show players</a>
+					<a class="server-players-button" data-address='{{.Address}}:{{.Port}}' href="#">Show players</a>
 				</div>
 				<div class="server-shit">
 					<a class="server-name" href="steam://connect/{{.Address}}:{{.Port}}">{{.Name}}</a><br>
