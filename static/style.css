@@ -29,7 +29,55 @@ a:visited {
 .server {
 	padding: 0.5em;
 	margin: 5px;
-	border: 1px solid white
+	border: 1px solid white;
+}
+
+.server-info {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.server-map {
+	display: inline;
+	position: relative;
+	margin-right: 1em;
+	border: 1px solid gray;
+	width: 200;
+	height: 125;
+}
+
+.server-map-no-image {
+	z-index: 1;
+	font-size: 2em;
+	text-align: center;
+	line-height: 125px;
+	color: gray;
+	background: black;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 200;
+	height: 125;
+}
+
+.server-map-image {
+	z-index: 2;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 200;
+	height: 125;
+}
+
+.server-map-name {
+	z-index: 3;
+	margin: 0;
+	padding: 0.2em;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.7);
 }
 
 .server-name {
@@ -38,16 +86,17 @@ a:visited {
 }
 
 .server-shit {
-	margin-top: 1em;
+	display: inline-block;
 }
 
 .server-players {
-	float: right;
 	text-align: center;
+	margin-left: auto;
 }
 
 .server-players-count {
 	font-size: 3em;
+	margin: 0;
 }
 
 table {

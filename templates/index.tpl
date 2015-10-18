@@ -10,15 +10,22 @@
 			<p class="header">Blade Symphony Server Browser</p>
 			{{range .}}
 			<div class="server" id="{{.Address}}:{{.Port}}">
-				<div class="server-players">
-					<span class="server-players-count">{{.PlayerCount}}/{{.Capacity}}</span><br>
-					<a class="server-players-button" data-address='{{.Address}}:{{.Port}}' href="#">Show players</a>
+				<div class="server-info">
+					<div class="server-map">
+						<div class="server-map-no-image">
+							no image :^)
+						</div>
+						<div style="background-image: url(/static/maps/{{.Map}}.jpg);" class="server-map-image"></div>
+						<p class="server-map-name">{{.Map}}</p>
+					</div>
+					<div class="server-shit">
+						<a class="server-name" href="steam://connect/{{.Address}}:{{.Port}}">{{.Name}}</a>
+					</div>
+					<div class="server-players">
+						<p class="server-players-count">{{.PlayerCount}}/{{.Capacity}}</p>
+						<a class="server-players-button" data-address='{{.Address}}:{{.Port}}' href="#">Show players</a>
+					</div>
 				</div>
-				<div class="server-shit">
-					<a class="server-name" href="steam://connect/{{.Address}}:{{.Port}}">{{.Name}}</a><br>
-					<span class="server-map">{{.Map}}</span><br>
-				</div>
-				<div class="clear"></div>
 			</div>
 			{{end}}
 		</div>
