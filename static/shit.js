@@ -1,9 +1,15 @@
 
+
+function scoreToLeague(score) {
+	return ["Oak", "Iron", "Steel", "Diamond", "Master"][score]
+}
+
+
 var playersTpl = _.template('<div class="server-players-list">\
 	<table>\
-	<tr><td>Name</td><td>Score</td><td>Time on Server</td></tr>\
+	<tr><td>Name</td><td>League</td><td>Time on Server</td></tr>\
 	<% _.map(players, function(player) { %>\
-		<tr><td><%- player.Name %></td><td><%- player.Score %></td><td><%- Math.round(player.Duration / 60) %> minutes</td></tr>\
+		<tr><td><%- player.Name %></td><td><%- scoreToLeague(player.Score) %></td><td><%- Math.round(player.Duration / 60) %> minutes</td></tr>\
 	<% }) %>\
 	</table>\
 	</div>');
